@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +7,7 @@ public class ProjectileShooterScript : MonoBehaviour
 
     public GameObject projectilePrefab;
 
-    public float inputLimit;
+    public Rect inputLimit;
 
     public float launchForce;
     public float horizontalAngleLimit;
@@ -37,8 +37,8 @@ public class ProjectileShooterScript : MonoBehaviour
             mousePos.y = Input.mousePosition.y;
             posDiff = mousePos - screenPos;
 
-            posDiff.x = Mathf.Clamp(posDiff.x, -inputLimit, inputLimit);
-            posDiff.y = Mathf.Clamp(posDiff.y, -inputLimit, inputLimit);
+            posDiff.x = Mathf.Clamp(posDiff.x, inputLimit.xMin, inputLimit.xMax);
+            posDiff.y = Mathf.Clamp(posDiff.y, inputLimit.yMin, inputLimit.yMax);
 
             DrawTrajectory();
 
@@ -61,8 +61,8 @@ public class ProjectileShooterScript : MonoBehaviour
     private void LaunchProjectile()
     {
         ProjectileScript ps = latestProjectile.GetComponent<ProjectileScript>();
-        float horizontalValue = Mathf.InverseLerp(-inputLimit, inputLimit, posDiff.x);
-        float verticalValue = Mathf.InverseLerp(-inputLimit, inputLimit, posDiff.y);
+        float horizontalValue = Mathf.InverseLerp(inputLimit.xMin, inputLimit.xMax, posDiff.x);
+        float verticalValue = Mathf.InverseLerp(inputLimit.yMin, inputLimit.yMax, posDiff.y);
 
         float horizontalAngle = -Mathf.Lerp(-horizontalAngleLimit, horizontalAngleLimit, horizontalValue);
         float verticalAngle = -Mathf.Lerp(maxVerticalAngleLimit, minVerticalAngleLimit, verticalValue);
