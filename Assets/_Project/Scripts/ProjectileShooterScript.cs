@@ -20,6 +20,7 @@ public class ProjectileShooterScript : MonoBehaviour
     [Header("Trajectory Prediction")]
     public int predictionSteps;
     public float predictionTimestep;
+    private ITrajectoryDrawer trajectoryDrawer;
 
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
@@ -28,6 +29,7 @@ public class ProjectileShooterScript : MonoBehaviour
     void Start()
     {
         SpawnProjectile();
+        trajectoryDrawer = GetComponent<ITrajectoryDrawer>();
     }
     
     void Update()
@@ -35,6 +37,7 @@ public class ProjectileShooterScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
+            trajectoryDrawer.ShowTrajectory();
             dragging = true;
         }
 
@@ -46,11 +49,12 @@ public class ProjectileShooterScript : MonoBehaviour
 
             posDiff.x = Mathf.Clamp(posDiff.x, inputLimit.xMin, inputLimit.xMax);
             posDiff.y = Mathf.Clamp(posDiff.y, inputLimit.yMin, inputLimit.yMax);
-
-            DrawTrajectory();
+            
+            trajectoryDrawer.SetTrajectory(PredictTrajectory());
 
             if (Input.GetMouseButtonUp(0))
             {
+                trajectoryDrawer.HideTrajectory();
                 dragging = false;
                 if (canLaunch) {
                     LaunchProjectile();
@@ -110,9 +114,10 @@ public class ProjectileShooterScript : MonoBehaviour
         {
             float t = i * predictionTimestep;
             pos.Add(initialPosition + initialSpeed * t + acceleration * t * t / 2);
-            if (Physics.Raycast(pos[i - 1], pos[i], out RaycastHit hit, 1f))
+            Vector3 speed = initialSpeed + acceleration * t;
+            if (Physics.Raycast(pos[i], speed, out RaycastHit hit, speed.magnitude))
             {
-                pos[i] = hit.point;
+                pos.Add(hit.point);
                 break;
             }
         }
@@ -130,8 +135,4 @@ public class ProjectileShooterScript : MonoBehaviour
         }
     }
 
-    private void DrawTrajectory()
-    {
-        // TODO: draw predictive projectile trajectory
-    }
 }
