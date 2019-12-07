@@ -120,6 +120,16 @@ public class ProjectileShooterScript : MonoBehaviour
         return pos;
     }
 
+    private void OnDrawGizmos()
+    {
+        List<Vector3> posArray = PredictTrajectory();
+
+        for (int i = 0; i < posArray.Count - 1; i++)
+        {
+            Gizmos.DrawLine(posArray[i], posArray[i + 1]);
+        }
+    }
+
     private void DrawTrajectory()
     {
         // TODO: draw predictive projectile trajectory
