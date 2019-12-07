@@ -507,17 +507,17 @@ PrefabInstance:
     - target: {fileID: 7182654986125630643, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7182654986125630643, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7182654986125630643, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7182654986125630643, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
@@ -547,7 +547,27 @@ PrefabInstance:
     - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: launchForce
-      value: 200
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: inputLimit
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: horizontalAngleLimit
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: minVerticalAngleLimit
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: maxVerticalAngleLimit
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4093976dd7e26bb4ab4e4dbcc542e848, type: 3}

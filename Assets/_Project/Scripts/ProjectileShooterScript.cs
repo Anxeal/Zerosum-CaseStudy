@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,13 @@ public class ProjectileShooterScript : MonoBehaviour
 {
 
     public GameObject projectilePrefab;
+
+    public float inputLimit;
+
     public float launchForce;
+    public float horizontalAngleLimit;
+    public float minVerticalAngleLimit;
+    public float maxVerticalAngleLimit;
 
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
@@ -29,7 +35,10 @@ public class ProjectileShooterScript : MonoBehaviour
         {
             mousePos.x = Input.mousePosition.x;
             mousePos.y = Input.mousePosition.y;
-            Vector2 posDiff = mousePos - screenPos;
+            posDiff = mousePos - screenPos;
+
+            posDiff.x = Mathf.Clamp(posDiff.x, -inputLimit, inputLimit);
+            posDiff.y = Mathf.Clamp(posDiff.y, -inputLimit, inputLimit);
 
             DrawTrajectory();
 
@@ -37,10 +46,10 @@ public class ProjectileShooterScript : MonoBehaviour
             {
                 dragging = false;
                 if (canLaunch) {
-                LaunchProjectile();
+                    LaunchProjectile();
+                }
             }
         }
-    }
     }
 
     private void SpawnProjectile()
@@ -48,11 +57,19 @@ public class ProjectileShooterScript : MonoBehaviour
         latestProjectile = Instantiate(projectilePrefab, transform);
         canLaunch = true;
     }
-
+     
     private void LaunchProjectile()
     {
         ProjectileScript ps = latestProjectile.GetComponent<ProjectileScript>();
-        ps.Launch((transform.forward+transform.up)*launchForce);
+        float horizontalValue = Mathf.InverseLerp(-inputLimit, inputLimit, posDiff.x);
+        float verticalValue = Mathf.InverseLerp(-inputLimit, inputLimit, posDiff.y);
+
+        float horizontalAngle = -Mathf.Lerp(-horizontalAngleLimit, horizontalAngleLimit, horizontalValue);
+        float verticalAngle = -Mathf.Lerp(maxVerticalAngleLimit, minVerticalAngleLimit, verticalValue);
+        
+        Vector3 launchDir = Quaternion.Euler(verticalAngle, horizontalAngle, 0) * transform.forward;
+
+        ps.Launch(launchDir * launchForce);
         Invoke("SpawnProjectile", 1f);
         canLaunch = false;
     }
