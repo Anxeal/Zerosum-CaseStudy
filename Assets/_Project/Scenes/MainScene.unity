@@ -552,7 +552,7 @@ PrefabInstance:
     - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: inputLimit
-      value: 80
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
@@ -567,7 +567,32 @@ PrefabInstance:
     - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: maxVerticalAngleLimit
-      value: 80
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: curveForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: inputLimit.y
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: inputLimit.height
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: inputLimit.width
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: inputLimit.x
+      value: -60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4093976dd7e26bb4ab4e4dbcc542e848, type: 3}

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +10,7 @@ public class ProjectileShooterScript : MonoBehaviour
     public Rect inputLimit;
 
     public float launchForce;
+    public float curveForce;
     public float horizontalAngleLimit;
     public float minVerticalAngleLimit;
     public float maxVerticalAngleLimit;
@@ -69,9 +70,14 @@ public class ProjectileShooterScript : MonoBehaviour
         
         Vector3 launchDir = Quaternion.Euler(verticalAngle, horizontalAngle, 0) * transform.forward;
 
-        ps.Launch(launchDir * launchForce);
+        ps.Launch(launchDir * launchForce, GetCurve(launchDir));
         Invoke("SpawnProjectile", 1f);
         canLaunch = false;
+    }
+
+    private Vector3 GetCurve(Vector3 direction)
+    {
+        return -transform.right * Mathf.Sign(direction.x)*direction.x*direction.x * curveForce;
     }
 
     private void DrawTrajectory()

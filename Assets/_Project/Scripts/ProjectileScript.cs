@@ -7,19 +7,32 @@ public class ProjectileScript : MonoBehaviour
 {
     private Rigidbody rb;
 
+    private bool collided = false;
+
+    private Vector3 windForce;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();   
     }
 
-    void OnCollisionEnter(Collision collision)
+    void FixedUpdate()
     {
-        // TODO: add collision logic
+        if (!collided) { 
+            rb.AddForce(windForce);
+        }
     }
 
-    public void Launch(Vector3 force)
+    void OnCollisionEnter(Collision collision)
+    {
+        // disable pre-collision curve
+        collided = true;
+    }
+
+    public void Launch(Vector3 force, Vector3 curve)
     {
         rb.isKinematic = false;
         rb.AddForce(force);
+        windForce = curve;
     }
 }
