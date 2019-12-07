@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public class ProjectileShooterScript : MonoBehaviour
 
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
-    private bool dragging;
+    private bool dragging, canLaunch;
     
     void Start()
     {
@@ -36,20 +36,25 @@ public class ProjectileShooterScript : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 dragging = false;
+                if (canLaunch) {
                 LaunchProjectile();
             }
         }
     }
+    }
 
     private void SpawnProjectile()
     {
-        latestProjectile = Instantiate(projectilePrefab);
+        latestProjectile = Instantiate(projectilePrefab, transform);
+        canLaunch = true;
     }
 
     private void LaunchProjectile()
     {
         ProjectileScript ps = latestProjectile.GetComponent<ProjectileScript>();
         ps.Launch((transform.forward+transform.up)*launchForce);
+        Invoke("SpawnProjectile", 1f);
+        canLaunch = false;
     }
 
     private void DrawTrajectory()
