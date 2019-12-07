@@ -21,6 +21,12 @@ public class ProjectileScript : MonoBehaviour
         if (!collided) { 
             rb.AddForce(windForce);
         }
+
+        // destroy projectile if it falls off
+        if(transform.position.y < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnCollisionEnter(Collision collision)
