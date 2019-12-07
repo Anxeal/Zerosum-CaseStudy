@@ -587,12 +587,17 @@ PrefabInstance:
     - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: inputLimit.width
-      value: 120
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
         type: 3}
       propertyPath: inputLimit.x
-      value: -60
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182654986125630642, guid: 4093976dd7e26bb4ab4e4dbcc542e848,
+        type: 3}
+      propertyPath: projectileCooldown
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4093976dd7e26bb4ab4e4dbcc542e848, type: 3}

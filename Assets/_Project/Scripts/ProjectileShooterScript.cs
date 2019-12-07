@@ -15,6 +15,8 @@ public class ProjectileShooterScript : MonoBehaviour
     public float minVerticalAngleLimit;
     public float maxVerticalAngleLimit;
 
+    public float projectileCooldown;
+
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
     private bool dragging, canLaunch;
@@ -71,7 +73,7 @@ public class ProjectileShooterScript : MonoBehaviour
         Vector3 launchDir = Quaternion.Euler(verticalAngle, horizontalAngle, 0) * transform.forward;
 
         ps.Launch(launchDir * launchForce, GetCurve(launchDir));
-        Invoke("SpawnProjectile", 1f);
+        Invoke("SpawnProjectile", projectileCooldown);
         canLaunch = false;
     }
 
