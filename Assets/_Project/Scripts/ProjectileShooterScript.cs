@@ -114,10 +114,10 @@ public class ProjectileShooterScript : MonoBehaviour
         {
             float t = i * predictionTimestep;
             pos.Add(initialPosition + initialSpeed * t + acceleration * t * t / 2);
-            Vector3 speed = initialSpeed + acceleration * t;
-            if (Physics.Raycast(pos[i], speed, out RaycastHit hit, speed.magnitude))
+            Vector3 dir = pos[i] - pos[i - 1];
+            if (Physics.Raycast(pos[i-1], dir, out RaycastHit hit, dir.magnitude))
             {
-                pos.Add(hit.point);
+                pos[i] = hit.point;
                 break;
             }
         }
