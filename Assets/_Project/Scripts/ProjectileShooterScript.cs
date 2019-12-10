@@ -26,10 +26,14 @@ public class ProjectileShooterScript : MonoBehaviour
     private Vector2 screenPos, mousePos, posDiff;
     private bool dragging, canLaunch;
 
+    private GameManager gameManager;
+
     void Start()
     {
         SpawnProjectile();
         trajectoryDrawers = GetComponents<ITrajectoryDrawer>();
+
+        gameManager = GameManager.Instance;
     }
 
     void Update()
@@ -80,6 +84,8 @@ public class ProjectileShooterScript : MonoBehaviour
         ps.Launch(launchVector, GetCurve(launchVector));
         Invoke("SpawnProjectile", projectileCooldown);
         canLaunch = false;
+
+        gameManager.ProjectileShot();
     }
 
     private Vector3 GetLaunchVector()
