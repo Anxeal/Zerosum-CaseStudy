@@ -3598,7 +3598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressSlider: {fileID: 639568423}
   targetSlider: {fileID: 2065632545}
-  speed: 3
+  speed: 5
 --- !u!4 &1946358191 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2766604003290323845, guid: 2df296c969aaa5243be55d03066da938,
