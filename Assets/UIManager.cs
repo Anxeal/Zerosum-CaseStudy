@@ -13,6 +13,6 @@ public class UIManager : MonoBehaviour
 
     public void SetShots(int value)
     {
-        shotsText.SetText("Shots: "+value);
+        shotsText.SetText(value.ToString());
     }
 }
