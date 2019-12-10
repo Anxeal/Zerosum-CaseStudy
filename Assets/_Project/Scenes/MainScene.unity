@@ -177,6 +177,18 @@ MonoBehaviour:
     type: 3}
   impactPrefab: {fileID: 6561769284494676379, guid: bb7640f24cd7736489bbe099c29cbac0,
     type: 3}
+--- !u!114 &888244039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888244035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ae72f2bac063104886171edaa51a064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1687258581
 GameObject:
   m_ObjectHideFlags: 0

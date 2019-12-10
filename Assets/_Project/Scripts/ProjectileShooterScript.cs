@@ -20,7 +20,7 @@ public class ProjectileShooterScript : MonoBehaviour
     [Header("Trajectory Prediction")]
     public int predictionSteps;
     public float predictionTimestep;
-    private ITrajectoryDrawer trajectoryDrawer;
+    private ITrajectoryDrawer[] trajectoryDrawers;
 
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
@@ -29,7 +29,7 @@ public class ProjectileShooterScript : MonoBehaviour
     void Start()
     {
         SpawnProjectile();
-        trajectoryDrawer = GetComponent<ITrajectoryDrawer>();
+        trajectoryDrawers = GetComponents<ITrajectoryDrawer>();
     }
     
     void Update()
@@ -37,7 +37,7 @@ public class ProjectileShooterScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
-            trajectoryDrawer.ShowTrajectory();
+            foreach(var td in trajectoryDrawers) td.ShowTrajectory();
             dragging = true;
         }
 
@@ -49,12 +49,13 @@ public class ProjectileShooterScript : MonoBehaviour
 
             posDiff.x = Mathf.Clamp(posDiff.x, inputLimit.xMin, inputLimit.xMax);
             posDiff.y = Mathf.Clamp(posDiff.y, inputLimit.yMin, inputLimit.yMax);
-            
-            trajectoryDrawer.SetTrajectory(PredictTrajectory());
+
+
+            foreach (var td in trajectoryDrawers) td.SetTrajectory(PredictTrajectory());
 
             if (Input.GetMouseButtonUp(0))
             {
-                trajectoryDrawer.HideTrajectory();
+                foreach (var td in trajectoryDrawers) td.HideTrajectory();
                 dragging = false;
                 if (canLaunch) {
                     LaunchProjectile();
@@ -123,16 +124,6 @@ public class ProjectileShooterScript : MonoBehaviour
         }
 
         return pos;
-    }
-
-    private void OnDrawGizmos()
-    {
-        List<Vector3> posArray = PredictTrajectory();
-
-        for (int i = 0; i < posArray.Count - 1; i++)
-        {
-            Gizmos.DrawLine(posArray[i], posArray[i + 1]);
-        }
     }
 
 }
