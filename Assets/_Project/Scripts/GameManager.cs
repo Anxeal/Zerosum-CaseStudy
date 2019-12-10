@@ -12,25 +12,33 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int demolishedTargets;
 
-    public Slider progressSlider;
+    public LevelProgress levelProgress;
 
     private float progress;
+
+    public float winPercentage;
 
 
     void Start()
     {
         if (Instance != null) Destroy(gameObject);
         Instance = this;
+
+        levelProgress.SetTarget(winPercentage);
     }
 
     void Update()
     {
-        progressSlider.value = Mathf.Lerp(progressSlider.value, progress, Time.deltaTime*5);
     }
 
     public void TargetDemolished()
     {
         demolishedTargets++;
         progress = (float)demolishedTargets / targetCount;
+        levelProgress.SetProgress(progress);
+        if(progress*100 > winPercentage)
+        {
+            Debug.Log("You Win!");
+        }
     }
 }
