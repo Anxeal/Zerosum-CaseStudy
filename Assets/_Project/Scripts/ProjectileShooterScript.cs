@@ -17,6 +17,11 @@ public class ProjectileShooterScript : MonoBehaviour
 
     public float projectileCooldown;
 
+    [Header("Trajectory Prediction")]
+    public int predictionSteps;
+    public float predictionTimestep;
+    private ITrajectoryDrawer[] trajectoryDrawers;
+
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
     private bool dragging, canLaunch;
@@ -24,6 +29,7 @@ public class ProjectileShooterScript : MonoBehaviour
     void Start()
     {
         SpawnProjectile();
+        trajectoryDrawers = GetComponents<ITrajectoryDrawer>();
     }
     
     void Update()
@@ -31,6 +37,7 @@ public class ProjectileShooterScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
+            foreach(var td in trajectoryDrawers) td.ShowTrajectory();
             dragging = true;
         }
 
@@ -43,10 +50,12 @@ public class ProjectileShooterScript : MonoBehaviour
             posDiff.x = Mathf.Clamp(posDiff.x, inputLimit.xMin, inputLimit.xMax);
             posDiff.y = Mathf.Clamp(posDiff.y, inputLimit.yMin, inputLimit.yMax);
 
-            DrawTrajectory();
+
+            foreach (var td in trajectoryDrawers) td.SetTrajectory(PredictTrajectory());
 
             if (Input.GetMouseButtonUp(0))
             {
+                foreach (var td in trajectoryDrawers) td.HideTrajectory();
                 dragging = false;
                 if (canLaunch) {
                     LaunchProjectile();
@@ -64,26 +73,57 @@ public class ProjectileShooterScript : MonoBehaviour
     private void LaunchProjectile()
     {
         ProjectileScript ps = latestProjectile.GetComponent<ProjectileScript>();
+
+        Vector3 launchVector = GetLaunchVector();
+
+        ps.Launch(launchVector, GetCurve(launchVector));
+        Invoke("SpawnProjectile", projectileCooldown);
+        canLaunch = false;
+    }
+
+    private Vector3 GetLaunchVector()
+    {
         float horizontalValue = Mathf.InverseLerp(inputLimit.xMin, inputLimit.xMax, posDiff.x);
         float verticalValue = Mathf.InverseLerp(inputLimit.yMin, inputLimit.yMax, posDiff.y);
 
         float horizontalAngle = -Mathf.Lerp(-horizontalAngleLimit, horizontalAngleLimit, horizontalValue);
         float verticalAngle = -Mathf.Lerp(maxVerticalAngleLimit, minVerticalAngleLimit, verticalValue);
-        
+
         Vector3 launchDir = Quaternion.Euler(verticalAngle, horizontalAngle, 0) * transform.forward;
 
-        ps.Launch(launchDir * launchForce, GetCurve(launchDir));
-        Invoke("SpawnProjectile", projectileCooldown);
-        canLaunch = false;
+        return launchDir * launchForce;
     }
 
     private Vector3 GetCurve(Vector3 direction)
     {
+        direction /= launchForce;
         return -transform.right * Mathf.Sign(direction.x)*direction.x*direction.x * curveForce;
     }
 
-    private void DrawTrajectory()
+    private List<Vector3> PredictTrajectory()
     {
-        // TODO: draw predictive projectile trajectory
+        Vector3 initialPosition = transform.position;
+        Vector3 launchVector = GetLaunchVector();
+        Vector3 curveVector = GetCurve(launchVector);
+        Vector3 initialSpeed = launchVector * Time.fixedDeltaTime;
+        Vector3 acceleration = curveVector + Physics.gravity;
+
+        List<Vector3> pos = new List<Vector3>();
+        pos.Add(initialPosition);
+        
+        for (int i = 1; i < predictionSteps; i++)
+        {
+            float t = i * predictionTimestep;
+            pos.Add(initialPosition + initialSpeed * t + acceleration * t * t / 2);
+            Vector3 dir = pos[i] - pos[i - 1];
+            if (Physics.Raycast(pos[i-1], dir, out RaycastHit hit, dir.magnitude))
+            {
+                pos[i] = hit.point;
+                break;
+            }
+        }
+
+        return pos;
     }
+
 }
