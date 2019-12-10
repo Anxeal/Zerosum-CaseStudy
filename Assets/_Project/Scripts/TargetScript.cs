@@ -29,7 +29,7 @@ public class TargetScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        else if (transform.localPosition.y < successHeight && !demolished)
+        else if (!demolished && transform.localPosition.y < successHeight)
         {
             demolished = true;
             gameManager.TargetDemolished();
