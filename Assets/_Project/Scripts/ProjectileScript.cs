@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
 {
@@ -13,17 +10,18 @@ public class ProjectileScript : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();   
+        rb = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
-        if (!collided) { 
+        if (!collided)
+        {
             rb.AddForce(windForce);
         }
 
         // destroy projectile if it falls off
-        if(transform.position.y < 0)
+        if (transform.position.y < 0)
         {
             Destroy(gameObject);
         }

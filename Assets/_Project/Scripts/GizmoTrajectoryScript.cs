@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GizmoTrajectoryScript : MonoBehaviour, ITrajectoryDrawer
 {
     private bool visible;
     private List<Vector3> trajectory;
-
-    void Start()
-    {
-        
-    }
 
     void OnDrawGizmos()
     {

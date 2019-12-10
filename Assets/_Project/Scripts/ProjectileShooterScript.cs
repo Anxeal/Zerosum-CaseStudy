@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileShooterScript : MonoBehaviour
 {
-
     public GameObject projectilePrefab;
 
-    public Rect inputLimit;
-
+    [Header("Force")]
     public float launchForce;
     public float curveForce;
+    
+    [Header("Limit")]
+    public Rect inputLimit;
     public float horizontalAngleLimit;
     public float minVerticalAngleLimit;
     public float maxVerticalAngleLimit;
@@ -25,19 +25,19 @@ public class ProjectileShooterScript : MonoBehaviour
     private GameObject latestProjectile;
     private Vector2 screenPos, mousePos, posDiff;
     private bool dragging, canLaunch;
-    
+
     void Start()
     {
         SpawnProjectile();
         trajectoryDrawers = GetComponents<ITrajectoryDrawer>();
     }
-    
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
-            foreach(var td in trajectoryDrawers) td.ShowTrajectory();
+            foreach (var td in trajectoryDrawers) td.ShowTrajectory();
             dragging = true;
         }
 
@@ -57,7 +57,8 @@ public class ProjectileShooterScript : MonoBehaviour
             {
                 foreach (var td in trajectoryDrawers) td.HideTrajectory();
                 dragging = false;
-                if (canLaunch) {
+                if (canLaunch)
+                {
                     LaunchProjectile();
                 }
             }
@@ -69,7 +70,7 @@ public class ProjectileShooterScript : MonoBehaviour
         latestProjectile = Instantiate(projectilePrefab, transform);
         canLaunch = true;
     }
-     
+
     private void LaunchProjectile()
     {
         ProjectileScript ps = latestProjectile.GetComponent<ProjectileScript>();
@@ -97,7 +98,10 @@ public class ProjectileShooterScript : MonoBehaviour
     private Vector3 GetCurve(Vector3 direction)
     {
         direction /= launchForce;
-        return -transform.right * Mathf.Sign(direction.x)*direction.x*direction.x * curveForce;
+        // x>0 => x^2
+        // x<0 => -x^2
+        // curve becomes more apparent towards the sides
+        return -transform.right * Mathf.Sign(direction.x) * direction.x * direction.x * curveForce;
     }
 
     private List<Vector3> PredictTrajectory()
@@ -110,13 +114,13 @@ public class ProjectileShooterScript : MonoBehaviour
 
         List<Vector3> pos = new List<Vector3>();
         pos.Add(initialPosition);
-        
+
         for (int i = 1; i < predictionSteps; i++)
         {
             float t = i * predictionTimestep;
             pos.Add(initialPosition + initialSpeed * t + acceleration * t * t / 2);
             Vector3 dir = pos[i] - pos[i - 1];
-            if (Physics.Raycast(pos[i-1], dir, out RaycastHit hit, dir.magnitude))
+            if (Physics.Raycast(pos[i - 1], dir, out RaycastHit hit, dir.magnitude))
             {
                 pos[i] = hit.point;
                 break;
