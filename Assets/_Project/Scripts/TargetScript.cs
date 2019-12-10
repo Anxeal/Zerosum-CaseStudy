@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class TargetScript : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-    
     void Update()
     {
         if (transform.position.y < 0)
