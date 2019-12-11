@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -91,12 +91,21 @@ public class GameManager : MonoBehaviour
     {
         var loaded = SceneManager.UnloadSceneAsync("Level" + Level);
         yield return loaded.isDone;
-        Level++;
-        if (Level > totalLevels)
+        if (Level == totalLevels)
         {
-            Level = 1;
-            Shots = 0;
+            uIManager.ShowRestart();
+            yield break;
         }
+        Level++;
         LoadLevel();
     }
+
+    public void RestartGame()
+    {
+        Level = 1;
+        Shots = 0;
+        LoadLevel();
+        uIManager.HideRestart();
+    }
+    
 }
