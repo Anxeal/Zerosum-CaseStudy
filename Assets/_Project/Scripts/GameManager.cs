@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     public float winPercentage;
     public int level = 1;
+    public int totalLevels;
 
     private float progress;
 
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour
         var loaded = SceneManager.UnloadSceneAsync("Level" + level);
         yield return loaded.isDone;
         level++;
+        if (level > totalLevels) level = 1;
         LoadLevel();
     }
 }

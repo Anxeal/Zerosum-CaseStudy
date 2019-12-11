@@ -346,6 +346,7 @@ MonoBehaviour:
   uIManager: {fileID: 1231843980}
   winPercentage: 80
   level: 1
+  totalLevels: 3
   targetCount: 0
   demolishedTargets: 0
   shots: 0
