@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afc4eabeeeea5f6429ffaec88f9f04ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  successHeight: 0
 --- !u!114 &4600758129076172708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,3 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionRadius: 1
   explosionForce: 800
+  explosionEffect: {fileID: 3576385471325963329, guid: 1caa8c5ab164a3d479ce8ea0a5cb6cd2,
+    type: 3}
+  shakeDuration: 1
+  shakeStrength: 0.5
