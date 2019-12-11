@@ -11,6 +11,11 @@ public class UIManager : MonoBehaviour
         levelProgress.SetProgress(value);
     }
 
+    public void SetProgressTarget(float value)
+    {
+        levelProgress.SetTarget(value);
+    }
+
     public void SetShots(int value)
     {
         shotsText.SetText(value.ToString());

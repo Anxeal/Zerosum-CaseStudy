@@ -9,8 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public UIManager uIManager;
-
-    public LevelProgress levelProgress;
+    
     public float winPercentage;
 
     private float progress;
@@ -29,7 +28,7 @@ public class GameManager : MonoBehaviour
         if (Instance != null) Destroy(gameObject);
         Instance = this;
 
-        levelProgress.SetTarget(winPercentage);
+        uIManager.SetProgressTarget(winPercentage);
     }
 
     void Update()
