@@ -8,7 +8,7 @@ public class ProjectileShooterScript : MonoBehaviour
     [Header("Force")]
     public float launchForce;
     public float curveForce;
-    
+
     [Header("Limit")]
     public Rect inputLimit;
     public float horizontalAngleLimit;
