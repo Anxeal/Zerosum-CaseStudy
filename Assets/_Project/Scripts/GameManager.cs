@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     public UIManager uIManager;
 
     public float winPercentage;
-    private int level = 1;
+    private int level;
     public int totalLevels;
 
     private float progress;
@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
 
     private int shots;
 
+    public ProjectileShooterScript projectileShooter;
+
+    public bool canPlay;
+
     void Start()
     {
         if (Instance != null) Destroy(gameObject);
@@ -47,6 +51,7 @@ public class GameManager : MonoBehaviour
 
         uIManager.SetProgressTarget(winPercentage);
 
+        Level = 1;
         LoadLevel();
     }
 
@@ -78,12 +83,18 @@ public class GameManager : MonoBehaviour
         progress = 0;
         uIManager.ResetProgress();
         targetCount = 0;
-        demolishedTargets = 0;
+        demolishedTargets = 0; 
+
+        projectileShooter.DestroyExtraProjectiles();
 
         SceneManager.LoadScene("Level" + Level, LoadSceneMode.Additive);
+        
+        canPlay = true;
     }
+
     public void NextLevel()
     {
+        canPlay = false;
         StartCoroutine(NextLevelCoroutine());
     }
 
@@ -91,12 +102,22 @@ public class GameManager : MonoBehaviour
     {
         var loaded = SceneManager.UnloadSceneAsync("Level" + Level);
         yield return loaded.isDone;
-        Level++;
-        if (Level > totalLevels)
+        if (Level == totalLevels)
         {
-            Level = 1;
-            Shots = 0;
+            uIManager.ShowRestart();
+            canPlay = false;
+            yield break;
         }
+        Level++;
         LoadLevel();
     }
+
+    public void RestartGame()
+    {
+        Level = 1;
+        Shots = 0;
+        LoadLevel();
+        uIManager.HideRestart();
+    }
+    
 }

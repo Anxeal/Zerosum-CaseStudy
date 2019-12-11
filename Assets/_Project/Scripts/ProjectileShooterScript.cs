@@ -38,7 +38,7 @@ public class ProjectileShooterScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && gameManager.canPlay)
         {
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
             foreach (var td in trajectoryDrawers) td.ShowTrajectory();
@@ -69,7 +69,7 @@ public class ProjectileShooterScript : MonoBehaviour
         }
     }
 
-    private void SpawnProjectile()
+    public void SpawnProjectile()
     {
         latestProjectile = Instantiate(projectilePrefab, transform);
         canLaunch = true;
@@ -134,6 +134,13 @@ public class ProjectileShooterScript : MonoBehaviour
         }
 
         return pos;
+    }
+
+    public void DestroyExtraProjectiles()
+    {
+        ProjectileScript[] projectiles = gameObject.GetComponentsInChildren<ProjectileScript>();
+
+        foreach (var p in projectiles) if (p.launched) Destroy(p.gameObject);
     }
 
 }

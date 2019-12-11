@@ -7,6 +7,8 @@ public class ProjectileScript : MonoBehaviour
 
     private bool collided = false;
 
+    public bool launched;
+
     private Vector3 windForce;
 
     void Start()
@@ -38,6 +40,7 @@ public class ProjectileScript : MonoBehaviour
 
     public void Launch(Vector3 force, Vector3 curve)
     {
+        launched = true;
         rb.isKinematic = false;
         rb.AddForce(force);
         windForce = curve;
