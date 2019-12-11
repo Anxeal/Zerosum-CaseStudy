@@ -11,6 +11,11 @@ public class UIManager : MonoBehaviour
         levelProgress.SetProgress(value);
     }
 
+    public void ResetProgress()
+    {
+        levelProgress.ResetProgress();
+    }
+
     public void SetProgressTarget(float value)
     {
         levelProgress.SetTarget(value);

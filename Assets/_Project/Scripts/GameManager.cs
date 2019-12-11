@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -19,14 +20,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int shots;
 
-
-
     void Start()
     {
         if (Instance != null) Destroy(gameObject);
         Instance = this;
 
         uIManager.SetProgressTarget(winPercentage);
+
+        LoadLevel();
     }
 
     void Update()
@@ -53,11 +54,22 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
+        // reset everything first
+
+        progress = 0;
+        uIManager.ResetProgress();
+        
         SceneManager.LoadScene("Level" + level, LoadSceneMode.Additive);
     }
-
     public void NextLevel()
     {
+        StartCoroutine(NextLevelCoroutine());
+    }
+
+    public IEnumerator NextLevelCoroutine()
+    {
+        var loaded = SceneManager.UnloadSceneAsync("Level" + level);
+        yield return loaded.isDone;
         level++;
         LoadLevel();
     }
