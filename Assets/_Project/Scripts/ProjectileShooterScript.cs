@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileShooterScript : MonoBehaviour
@@ -69,7 +69,7 @@ public class ProjectileShooterScript : MonoBehaviour
         }
     }
 
-    private void SpawnProjectile()
+    public void SpawnProjectile()
     {
         latestProjectile = Instantiate(projectilePrefab, transform);
         canLaunch = true;
@@ -134,6 +134,15 @@ public class ProjectileShooterScript : MonoBehaviour
         }
 
         return pos;
+    }
+
+    public void DestroyExtraProjectiles()
+    {
+        ProjectileScript[] projectiles = gameObject.GetComponentsInChildren<ProjectileScript>();
+
+        Debug.Log(projectiles.Length);
+
+        foreach (var p in projectiles) if (p.launched) Destroy(p.gameObject);
     }
 
 }
