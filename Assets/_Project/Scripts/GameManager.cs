@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
 
         progress = 0;
         uIManager.ResetProgress();
+        targetCount = 0;
+        demolishedTargets = 0;
         
         SceneManager.LoadScene("Level" + level, LoadSceneMode.Additive);
         uIManager.SetLevel(level);
