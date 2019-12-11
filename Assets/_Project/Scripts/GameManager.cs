@@ -5,6 +5,25 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public int Level
+    {
+        get => level;
+        set
+        {
+            level = value;
+            uIManager.SetLevel(level);
+        }
+    }
+
+    public int Shots
+    {
+        get => shots;
+        set
+        {
+            shots = value;
+            uIManager.SetShots(shots);
+        }
+    }
 
     public UIManager uIManager;
 
@@ -18,8 +37,8 @@ public class GameManager : MonoBehaviour
     public int targetCount;
     [HideInInspector]
     public int demolishedTargets;
-    [HideInInspector]
-    public int shots;
+
+    private int shots;
 
     void Start()
     {
@@ -49,8 +68,7 @@ public class GameManager : MonoBehaviour
 
     public void ProjectileShot()
     {
-        shots++;
-        uIManager.SetShots(shots);
+        Shots++;
     }
 
     public void LoadLevel()
@@ -62,8 +80,7 @@ public class GameManager : MonoBehaviour
         targetCount = 0;
         demolishedTargets = 0;
 
-        SceneManager.LoadScene("Level" + level, LoadSceneMode.Additive);
-        uIManager.SetLevel(level);
+        SceneManager.LoadScene("Level" + Level, LoadSceneMode.Additive);
     }
     public void NextLevel()
     {
@@ -72,14 +89,13 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator NextLevelCoroutine()
     {
-        var loaded = SceneManager.UnloadSceneAsync("Level" + level);
+        var loaded = SceneManager.UnloadSceneAsync("Level" + Level);
         yield return loaded.isDone;
-        level++;
-        if (level > totalLevels)
+        Level++;
+        if (Level > totalLevels)
         {
-            level = 1;
-            shots = 0;
-            uIManager.SetShots(shots);
+            Level = 1;
+            Shots = 0;
         }
         LoadLevel();
     }
