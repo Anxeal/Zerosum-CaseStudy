@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
 
     public ProjectileShooterScript projectileShooter;
 
+    public bool canPlay;
+
     void Start()
     {
         if (Instance != null) Destroy(gameObject);
@@ -86,10 +88,13 @@ public class GameManager : MonoBehaviour
         projectileShooter.DestroyExtraProjectiles();
 
         SceneManager.LoadScene("Level" + Level, LoadSceneMode.Additive);
+        
+        canPlay = true;
     }
 
     public void NextLevel()
     {
+        canPlay = false;
         StartCoroutine(NextLevelCoroutine());
     }
 
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
         if (Level == totalLevels)
         {
             uIManager.ShowRestart();
+            canPlay = false;
             yield break;
         }
         Level++;

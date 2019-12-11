@@ -38,7 +38,7 @@ public class ProjectileShooterScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && gameManager.canPlay)
         {
             screenPos = Camera.main.WorldToScreenPoint(transform.position);
             foreach (var td in trajectoryDrawers) td.ShowTrajectory();
@@ -139,8 +139,6 @@ public class ProjectileShooterScript : MonoBehaviour
     public void DestroyExtraProjectiles()
     {
         ProjectileScript[] projectiles = gameObject.GetComponentsInChildren<ProjectileScript>();
-
-        Debug.Log(projectiles.Length);
 
         foreach (var p in projectiles) if (p.launched) Destroy(p.gameObject);
     }
