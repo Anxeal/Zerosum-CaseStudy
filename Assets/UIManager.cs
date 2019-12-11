@@ -5,6 +5,7 @@ public class UIManager : MonoBehaviour
 {
     public LevelProgress levelProgress;
     public TextMeshProUGUI shotsText;
+    public TextMeshPro levelText;
 
     public void SetProgress(float value)
     {
@@ -24,5 +25,10 @@ public class UIManager : MonoBehaviour
     public void SetShots(int value)
     {
         shotsText.SetText(value.ToString());
+    }
+
+    public void SetLevel(int value)
+    {
+        levelText.SetText(value.ToString());
     }
 }

@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         uIManager.ResetProgress();
         
         SceneManager.LoadScene("Level" + level, LoadSceneMode.Additive);
+        uIManager.SetLevel(level);
     }
     public void NextLevel()
     {
