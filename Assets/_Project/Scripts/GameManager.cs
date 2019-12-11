@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     public UIManager uIManager;
-    
+
     public float winPercentage;
+    public int level = 1;
+    public int totalLevels;
 
     private float progress;
 
@@ -21,14 +21,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int shots;
 
-
-
     void Start()
     {
         if (Instance != null) Destroy(gameObject);
         Instance = this;
 
         uIManager.SetProgressTarget(winPercentage);
+
+        LoadLevel();
     }
 
     void Update()
@@ -40,9 +40,10 @@ public class GameManager : MonoBehaviour
         demolishedTargets++;
         progress = (float)demolishedTargets / targetCount;
         uIManager.SetProgress(progress);
-        if(progress*100 > winPercentage)
+        if (progress * 100 > winPercentage)
         {
             Debug.Log("You Win!");
+            NextLevel();
         }
     }
 
@@ -50,5 +51,29 @@ public class GameManager : MonoBehaviour
     {
         shots++;
         uIManager.SetShots(shots);
+    }
+
+    public void LoadLevel()
+    {
+        // reset everything first
+
+        progress = 0;
+        uIManager.ResetProgress();
+        
+        SceneManager.LoadScene("Level" + level, LoadSceneMode.Additive);
+        uIManager.SetLevel(level);
+    }
+    public void NextLevel()
+    {
+        StartCoroutine(NextLevelCoroutine());
+    }
+
+    public IEnumerator NextLevelCoroutine()
+    {
+        var loaded = SceneManager.UnloadSceneAsync("Level" + level);
+        yield return loaded.isDone;
+        level++;
+        if (level > totalLevels) level = 1;
+        LoadLevel();
     }
 }
