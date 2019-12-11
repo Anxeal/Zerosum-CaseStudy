@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     public UIManager uIManager;
-    
+
     public float winPercentage;
+    public int level = 1;
 
     private float progress;
 
@@ -40,9 +38,10 @@ public class GameManager : MonoBehaviour
         demolishedTargets++;
         progress = (float)demolishedTargets / targetCount;
         uIManager.SetProgress(progress);
-        if(progress*100 > winPercentage)
+        if (progress * 100 > winPercentage)
         {
             Debug.Log("You Win!");
+            NextLevel();
         }
     }
 
@@ -50,5 +49,16 @@ public class GameManager : MonoBehaviour
     {
         shots++;
         uIManager.SetShots(shots);
+    }
+
+    public void LoadLevel()
+    {
+        SceneManager.LoadScene("Level" + level, LoadSceneMode.Additive);
+    }
+
+    public void NextLevel()
+    {
+        level++;
+        LoadLevel();
     }
 }
