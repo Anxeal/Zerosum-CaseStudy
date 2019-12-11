@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class ProjectileScript : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class ProjectileScript : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
+        transform.DOScale(0, .3f).From().SetEase(Ease.OutBounce);
     }
 
     void FixedUpdate()
